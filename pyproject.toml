@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slash-trail"
+version = "1.0.0"
+description = "Glowing slash trails for any animated object in Maya, with a Qt window for animators."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Arsam Ali" }]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+ui = ["PySide6"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["python"]
+
+[tool.pytest.ini_options]
+testpaths = ["python/slash_trail/test"]
+pythonpath = ["python"]
