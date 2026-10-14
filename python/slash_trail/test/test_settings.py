@@ -43,6 +43,7 @@ def test_invalid_settings(overrides, message):
 
 def test_sample_count_includes_both_ends():
     assert make(start=1, end=11, substeps=4).sample_count == 41
+    assert make(start=1, end=1.25, substeps=1).sample_count == 2
 
 
 def test_trail_name_from_base():

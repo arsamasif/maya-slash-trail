@@ -79,7 +79,7 @@ class TrailSettings:
     @property
     def sample_count(self):
         """int: Number of samples from start to end, both included."""
-        return int(round((self.end - self.start) * self.substeps)) + 1
+        return max(1, int(round((self.end - self.start) * self.substeps))) + 1
 
     @property
     def trail_name(self):

@@ -13,6 +13,11 @@ def test_sample_times_cover_range():
     assert times[1] == pytest.approx(1.25)
 
 
+def test_sample_times_keep_both_ends_of_a_short_range():
+    assert ribbon.sample_times(1, 1.25, 1) == [1, 1.25]
+    assert ribbon.sample_times(10, 10.1, 4) == [10, 10.1]
+
+
 def test_sample_times_rejects_bad_input():
     with pytest.raises(ValueError, match="not after"):
         ribbon.sample_times(5, 5, 2)

@@ -41,6 +41,9 @@ class RibbonMesh:
 def sample_times(start, end, substeps):
     """Return evenly spaced sample times from start to end.
 
+    A range shorter than one sample step still gives its two ends, so a
+    short fractional range does not end up with no samples.
+
     Args:
         start (float): First frame.
         end (float): Last frame, included.
@@ -57,7 +60,7 @@ def sample_times(start, end, substeps):
         raise ValueError("End frame {0} is not after start frame {1}".format(end, start))
     if substeps < 1:
         raise ValueError("Substeps must be 1 or more, got {0}".format(substeps))
-    count = int(round((end - start) * substeps))
+    count = max(1, int(round((end - start) * substeps)))
     step = (end - start) / count
     return [start + index * step for index in range(count)] + [float(end)]
 
