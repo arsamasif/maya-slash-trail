@@ -172,10 +172,13 @@ class TrailSettings:
             TrailSettings: The settings.
 
         Raises:
-            ValueError: If the text is not a JSON object.
+            ValueError: If the text is empty, not JSON, or not a JSON object.
 
         """
-        data = json.loads(text)
+        try:
+            data = json.loads(text)
+        except (TypeError, ValueError) as error:
+            raise ValueError("Trail settings are not valid JSON: {0}".format(error)) from None
         if not isinstance(data, dict):
             raise ValueError("Trail settings must be a JSON object")
         data.setdefault("use_blade", True)

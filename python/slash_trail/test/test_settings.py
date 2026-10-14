@@ -78,3 +78,9 @@ def test_from_json_ignores_unknown_keys():
 def test_from_json_rejects_non_objects():
     with pytest.raises(ValueError, match="JSON object"):
         settings.TrailSettings.from_json("[1, 2]")
+
+
+@pytest.mark.parametrize("text", ["", "{base: a}", None])
+def test_from_json_reports_unreadable_text(text):
+    with pytest.raises(ValueError, match="not valid JSON"):
+        settings.TrailSettings.from_json(text)

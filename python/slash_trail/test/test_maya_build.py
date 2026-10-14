@@ -238,3 +238,11 @@ def test_rebuild_with_new_settings_keeps_the_name(blade):
     assert maya_build.read_settings(updated).trail_frames == 8
     assert maya_build.read_settings(updated).name == "hero"
     assert len(maya_build.list_trails()) == 1
+
+
+def test_cleared_settings_are_a_value_error(blade):
+    hilt, tip = blade
+    group = maya_build.create(_settings(hilt, tip))
+    cmds.setAttr(group + "." + constants.SETTINGS_ATTR, "", type="string")
+    with pytest.raises(ValueError, match="not valid JSON"):
+        maya_build.read_settings(group)
