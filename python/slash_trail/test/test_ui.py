@@ -163,6 +163,19 @@ def test_selecting_a_trail_loads_it_and_rebuild_uses_the_window(dialog):
     assert dialog.status.text() == "Rebuilt ball_slashTrail"
 
 
+def test_unreadable_trail_settings_are_reported(dialog):
+    def broken(trail):
+        raise ValueError("Trail settings are not valid JSON")
+
+    dialog.builder.read_settings = broken
+    dialog.builder.selected = ["|ball_slashTrail"]
+    dialog.load_selected()
+    assert dialog.status.text().startswith("Cannot load ball_slashTrail: Trail settings")
+    dialog.scene.on_selection()
+    assert dialog.status.text().startswith("Cannot load ball_slashTrail")
+    assert dialog.settings().base == ""
+
+
 def test_rebuilding_several_trails_uses_their_stored_values(dialog):
     dialog.builder.selected = ["|a_slashTrail", "|b_slashTrail"]
     dialog.rebuild_selected()

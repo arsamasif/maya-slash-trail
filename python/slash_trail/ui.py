@@ -84,7 +84,8 @@ class SlashTrailDialog(QtWidgets.QDialog):
                 self._loaded_trail = None
             return
         self._loaded_trail = trails[0]
-        self.set_settings(self.builder.read_settings(trails[0]))
+        if not self._load(trails[0]):
+            return
         self._report(
             "Editing {0}: change values and press Rebuild Selected".format(_short(trails[0]))
         )
@@ -189,8 +190,8 @@ class SlashTrailDialog(QtWidgets.QDialog):
         if not trails:
             self._report("Select a trail to load its settings", ok=False)
             return
-        self.set_settings(self.builder.read_settings(trails[0]))
-        self._report("Loaded settings from {0}".format(_short(trails[0])))
+        if self._load(trails[0]):
+            self._report("Loaded settings from {0}".format(_short(trails[0])))
 
     def fit_to_motion(self):
         """Fill timing, width and sparks from how the object moves.
@@ -374,6 +375,15 @@ class SlashTrailDialog(QtWidgets.QDialog):
             return
         names = result if isinstance(result, list) else [result]
         self._report(message.format(", ".join(_short(name) for name in names)))
+
+    def _load(self, trail):
+        try:
+            loaded = self.builder.read_settings(trail)
+        except ValueError as error:
+            self._report("Cannot load {0}: {1}".format(_short(trail), error), ok=False)
+            return False
+        self.set_settings(loaded)
+        return True
 
     def _rebuild_one(self, trail, current):
         rebuilt = self.builder.rebuild(trail, current)
