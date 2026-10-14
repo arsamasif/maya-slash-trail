@@ -117,8 +117,14 @@ class TrailSettings:
             raise ValueError("Inner edge must be between 0 and 1")
         if len(self.color) != 3:
             raise ValueError("Color needs three values")
+        if self.glow < 0:
+            raise ValueError("Glow strength cannot be negative")
+        if not 0.0 <= self.core_white <= 1.0:
+            raise ValueError("White-hot edge must be between 0 and 1")
         if self.sparks and (self.spark_count < 1 or self.spark_life <= 0):
             raise ValueError("Sparks need a count and a life above zero")
+        if self.sparks and self.spark_speed < 0:
+            raise ValueError("Spark speed cannot be negative")
 
     def _validate_blade(self):
         if self.tip and self.tip == self.base:

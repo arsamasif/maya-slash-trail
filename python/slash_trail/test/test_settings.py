@@ -34,6 +34,9 @@ def test_valid_settings_pass():
         ({"use_blade": False, "facing": "up"}, "Facing must be"),
         ({"use_blade": False, "camera": ""}, "Pick a camera"),
         ({"sparks": True, "spark_count": 0}, "Sparks need"),
+        ({"glow": -1}, "Glow strength"),
+        ({"core_white": 1.5}, "White-hot edge"),
+        ({"sparks": True, "spark_speed": -5}, "Spark speed"),
     ],
 )
 def test_invalid_settings(overrides, message):
